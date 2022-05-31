@@ -2,8 +2,17 @@
   <l-map style="height: 650px " :zoom="zoom" :center="center">
     <l-tile-layer :url="url" :attribution="attribution">
     </l-tile-layer>
-    <l-marker :lat-lng="markerLatLng">
-      <l-popup>Live ?</l-popup>
+    <l-marker
+      v-for="(mushroom, i) in mushrooms"  :key="i"
+      :lat-lng="mushroom.latlng"
+      >
+      <l-popup>
+        <ul>
+          <li>{{ mushroom.name }}</li>
+          <li>{{ mushroom.color }}</li>
+          <li>{{ mushroom.spots }}</li>
+        </ul>
+      </l-popup>
     </l-marker>
   </l-map>
 </template>
@@ -17,6 +26,9 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'MapContainer',
+  props: {
+    mushrooms: Array
+  },
   components: {
     LMap,
     LTileLayer,
