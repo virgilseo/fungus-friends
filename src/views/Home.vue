@@ -2,7 +2,7 @@
   <div class="home">
     <p v-if="loading">Loading...</p>
     <p v-if="error">Error...</p>
-    <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms"/>
+    <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
   </div>
 </template>
 
@@ -29,20 +29,17 @@ export default defineComponent({
   },
   methods: {
     getMushrooms (): void {
-      try {
-        this.loading = true
-        mushrooms().then((result) => {
-          this.mushrooms = result
+      this.loading = true
+      mushrooms().then((result) => {
+        this.mushrooms = result
+      })
+        .catch(error => {
+          console.log(error)
         })
-      } catch (error) {
-        console.log(error)
-        this.error = true
-      } finally {
-        mushrooms().then(() => {
+        .finally(() => {
           this.mushroomsLoaded = true
           this.loading = false
         })
-      }
     }
   }
 })
