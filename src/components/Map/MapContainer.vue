@@ -1,5 +1,5 @@
 <template>
-  <l-map style="height: 650px " :zoom="zoom" :center="center">
+  <l-map style="height: 80VH " :zoom="zoom" :center="center">
     <l-tile-layer :url="url" :attribution="attribution">
     </l-tile-layer>
     <l-marker
@@ -7,10 +7,11 @@
       :lat-lng="mushroom.latlng"
       >
       <l-popup>
+        <img src="https://picsum.photos/200" alt="placeholder">
+        <h3>{{ mushroom.name }}</h3>
         <ul>
-          <li>{{ mushroom.name }}</li>
-          <li>{{ mushroom.color }}</li>
-          <li>{{ mushroom.spots }}</li>
+          <li>{{ color[mushroom.color].toLowerCase() }}</li>
+          <li>{{ spots[mushroom.spots] }}</li>
         </ul>
       </l-popup>
     </l-marker>
@@ -23,6 +24,7 @@ import 'leaflet/dist/leaflet.css'
 // @ts-ignore
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import { defineComponent } from 'vue'
+import { Spots, Color } from '@/api/front-end api.ts'
 
 export default defineComponent({
   name: 'MapContainer',
@@ -40,11 +42,11 @@ export default defineComponent({
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 16,
+      zoom: 17,
       center: [52.080678, 5.236457],
-      markerLatLng: [52.080678, 5.236457]
+      spots: Spots,
+      color: Color
     }
   }
 })
-
 </script>
