@@ -20,6 +20,11 @@ import MapContainer from '@/components/Map/MapContainer.vue'
 import mushrooms, { Spots, Color } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
 
+type Choice = {
+  name: string,
+  selected: boolean
+}
+
 export default defineComponent({
   name: 'Home',
   components: {
@@ -78,10 +83,31 @@ export default defineComponent({
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice)
         this.mushrooms = filteredMushrooms
+        this.removeChoices(this.spotChoices, 'color')
       } else {
-        const filteredMushrooms = this.allMushrooms.filter(
+        const filteredMushrooms = this.mushrooms.filter(
           (item: Record<string, Color>) => this.spots[item.spots].toLowerCase() === choice)
         this.mushrooms = filteredMushrooms
+        this.removeChoices(this.colorChoices, 'spot')
+      }
+    },
+    // Filter out choices from the second select boxes
+    // Check the mushrooms that reamain on page and then filter the choices
+    removeChoices (choices: Array<Choice>, type: string) {
+      if (type === 'color') {
+        const filteredChoices = choices.filter((spot: Choice) =>
+          this.mushrooms.some((mushroom: Record<string, Spots>) =>
+            spot.name === this.spots[mushroom.spots]
+          )
+        )
+        this.spotChoices = filteredChoices
+      } else {
+        const filteredChoices = choices.filter((color: Choice) =>
+          this.mushrooms.some((mushroom: Record<string, Spots>) =>
+            color.name === this.color[mushroom.color].toLowerCase()
+          )
+        )
+        this.colorChoices = filteredChoices
       }
     }
   }
