@@ -6,7 +6,7 @@
   <ul>
     <li
       v-for="(choice, i) in choices"  :key="i"
-      @click="sort(choice.name)"
+      @click="sort(choice.name, type)"
       >
       {{ choice.name }}
     </li>

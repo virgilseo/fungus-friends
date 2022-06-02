@@ -6,6 +6,10 @@
       v-if="mushroomsLoaded"
       :sort="sortMushroms" :choices="colorChoices"
       :mushrooms="mushrooms" :type="'color'"/>
+    <FilterMushrooms
+      v-if="mushroomsLoaded"
+      :sort="sortMushroms" :choices="spotChoices"
+      :mushrooms="mushrooms" :type="'spots'"/>
     <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
   </div>
 </template>
@@ -35,6 +39,18 @@ export default defineComponent({
         { name: 'yellow', selected: false },
         { name: 'blue', selected: false }
       ],
+      spotChoices: [
+        { name: 'none', selected: false },
+        { name: 'hidden', selected: false },
+        { name: 'dotted', selected: false },
+        { name: 'dashed', selected: false },
+        { name: 'solid', selected: false },
+        { name: 'double', selected: false },
+        { name: 'grove', selected: false },
+        { name: 'ridge', selected: false },
+        { name: 'inset', selected: false },
+        { name: 'outset', selected: false }
+      ],
       color: Color,
       spots: Spots
     }
@@ -57,10 +73,16 @@ export default defineComponent({
           this.loading = false
         })
     },
-    sortMushroms (choice: string): void {
-      const filteredMushrooms = this.allMushrooms.filter(
-        (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice)
-      this.mushrooms = filteredMushrooms
+    sortMushroms (choice: string, type: string): void {
+      if (type === 'color') {
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice)
+        this.mushrooms = filteredMushrooms
+      } else {
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Color>) => this.spots[item.spots].toLowerCase() === choice)
+        this.mushrooms = filteredMushrooms
+      }
     }
   }
 })
