@@ -7,12 +7,7 @@
       :lat-lng="mushroom.latlng"
       >
       <l-popup>
-        <img src="https://picsum.photos/200" alt="placeholder">
-        <h3>{{ mushroom.name }}</h3>
-        <ul>
-          <li>{{ color[mushroom.color].toLowerCase() }}</li>
-          <li>{{ spots[mushroom.spots] }}</li>
-        </ul>
+        <InfoBox :mushroom="mushroom" />
       </l-popup>
     </l-marker>
   </l-map>
@@ -25,6 +20,7 @@ import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import { defineComponent } from 'vue'
 import { Spots, Color } from '@/api/front-end api.ts'
+import InfoBox from '@/components/Map/InfoBox.vue'
 
 export default defineComponent({
   name: 'MapContainer',
@@ -35,7 +31,8 @@ export default defineComponent({
     LMap,
     LTileLayer,
     LMarker,
-    LPopup
+    LPopup,
+    InfoBox
   },
   data () {
     return {
