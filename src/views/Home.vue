@@ -4,11 +4,11 @@
     <p v-if="error">Error...</p>
     <FilterMushrooms
       v-if="mushroomsLoaded"
-      :sort="sortMushroms" :choices="colorChoices"
+      :sort="sortByColor" :choices="colorChoices"
       :mushrooms="mushrooms" :type="'color'"/>
     <FilterMushrooms
       v-if="mushroomsLoaded"
-      :sort="sortMushroms" :choices="spotChoices"
+      :sort="sortBySpots" :choices="spotChoices"
       :mushrooms="mushrooms" :type="'spots'"/>
     <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
   </div>
@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MapContainer from '@/components/Map/MapContainer.vue'
-import mushrooms, { Spots, Color } from '@/api/front-end api.ts'
+import mushrooms, { Spots, Color, Mushroom } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
 
 type Choice = {
@@ -51,13 +51,15 @@ export default defineComponent({
         { name: 'dashed', selected: false },
         { name: 'solid', selected: false },
         { name: 'double', selected: false },
-        { name: 'grove', selected: false },
+        { name: 'groove', selected: false },
         { name: 'ridge', selected: false },
         { name: 'inset', selected: false },
         { name: 'outset', selected: false }
       ],
       color: Color,
-      spots: Spots
+      spots: Spots,
+      colorChoice: '',
+      spotsChoice: ''
     }
   },
   mounted () {
@@ -78,15 +80,36 @@ export default defineComponent({
           this.loading = false
         })
     },
-    sortMushroms (choice: string, type: string): void {
-      if (type === 'color') {
+    sortByColor (choice: string) {
+      // Signal color choice
+      this.colorChoice = choice
+      if (this.spotsChoice === '') {
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.spotChoices, 'color')
       } else {
-        const filteredMushrooms = this.mushrooms.filter(
-          (item: Record<string, Color>) => this.spots[item.spots].toLowerCase() === choice)
+        // Take into account spots choice when filetring the mushrooms again
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice &&
+          this.spots[item.spots].toLowerCase() === this.spotsChoice)
+        this.mushrooms = filteredMushrooms
+        this.removeChoices(this.spotChoices, 'color')
+      }
+    },
+    sortBySpots (choice: string) {
+      // Signal spot choice
+      this.spotsChoice = choice
+      if (this.colorChoice === '') {
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice)
+        this.mushrooms = filteredMushrooms
+        this.removeChoices(this.colorChoices, 'spot')
+      } else {
+        // Take into account color choice when filetring the mushrooms again
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice &&
+          this.color[item.color].toLowerCase() === this.colorChoice)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.colorChoices, 'spot')
       }
@@ -100,14 +123,14 @@ export default defineComponent({
             spot.name === this.spots[mushroom.spots]
           )
         )
-        this.spotChoices = filteredChoices
+        this.spotChoices = [...filteredChoices]
       } else {
         const filteredChoices = choices.filter((color: Choice) =>
           this.mushrooms.some((mushroom: Record<string, Spots>) =>
             color.name === this.color[mushroom.color].toLowerCase()
           )
         )
-        this.colorChoices = filteredChoices
+        this.colorChoices = [...filteredChoices]
       }
     }
   }

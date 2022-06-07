@@ -1,5 +1,5 @@
 <template>
-  <img src="https://images.unsplash.com/photo-1645907585204-03769583ae48?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMzQ0OTJ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NTQ1MDYyOTc&ixlib=rb-1.2.1&q=80&w=200" alt="placeholder">
+  <img :src="image" alt="placeholder">
   <h3>{{ mushroom.name }}</h3>
   <ul>
     <li>{{ color[mushroom.color].toLowerCase() }}</li>
@@ -10,6 +10,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Spots, Color, Mushroom } from '@/api/front-end api.ts'
+import { mapGetters, mapActions } from 'vuex'
 
 export default defineComponent({
   name: 'InfoBox',
@@ -21,6 +22,13 @@ export default defineComponent({
       color: Color,
       spots: Spots
     }
+  },
+  computed: {
+    ...mapGetters({
+      image: 'infoBox/getImage',
+      error: 'infoBox/getError',
+      loading: 'infoBox/getLoading'
+    })
   }
 })
 

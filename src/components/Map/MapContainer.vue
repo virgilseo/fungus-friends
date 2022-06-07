@@ -5,6 +5,7 @@
     <l-marker
       v-for="(mushroom, i) in mushrooms"  :key="i"
       :lat-lng="mushroom.latlng"
+      @click="requestImage"
       >
       <l-popup>
         <InfoBox :mushroom="mushroom" />
@@ -21,6 +22,7 @@ import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 import { defineComponent } from 'vue'
 import { Spots, Color } from '@/api/front-end api.ts'
 import InfoBox from '@/components/Map/InfoBox.vue'
+import { mapActions } from 'vuex'
 
 export default defineComponent({
   name: 'MapContainer',
@@ -44,6 +46,11 @@ export default defineComponent({
       spots: Spots,
       color: Color
     }
+  },
+  methods: {
+    ...mapActions({
+      requestImage: 'infoBox/requestImage'
+    })
   }
 })
 </script>
