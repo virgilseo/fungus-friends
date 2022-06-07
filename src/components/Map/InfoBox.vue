@@ -1,16 +1,19 @@
 <template>
-  <img :src="image" alt="placeholder">
-  <h3>{{ mushroom.name }}</h3>
-  <ul>
-    <li>{{ color[mushroom.color].toLowerCase() }}</li>
-    <li>{{ spots[mushroom.spots] }}</li>
-  </ul>
+  <p v-if="loading">Loading...</p>
+  <section v-else>
+    <img :src="error ? placeholder : image" alt="placeholder">
+    <h3>{{ mushroom.name }}</h3>
+    <ul>
+      <li>{{ color[mushroom.color].toLowerCase() }}</li>
+      <li>{{ spots[mushroom.spots] }}</li>
+    </ul>
+  </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Spots, Color, Mushroom } from '@/api/front-end api.ts'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default defineComponent({
   name: 'InfoBox',
@@ -20,7 +23,8 @@ export default defineComponent({
   data () {
     return {
       color: Color,
-      spots: Spots
+      spots: Spots,
+      placeholder: 'https://picsum.photos/200'
     }
   },
   computed: {
