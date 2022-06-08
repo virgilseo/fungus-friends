@@ -9,36 +9,36 @@ type State = {
 
 export const infoBox = {
   namespaced: true,
-  state: () => ({
+  state: (): State => ({
     loading: false,
     error: false,
     imageSrc: ''
   }),
   getters: {
-    getLoading (state: State) {
+    getLoading (state: State): boolean {
       return state.loading
     },
-    getError (state: State) {
+    getError (state: State): boolean {
       return state.error
     },
-    getImage (state: State) {
+    getImage (state: State): string {
       return state.imageSrc
     }
   },
   mutations: {
-    setError (state: State, payload: boolean) {
+    setError (state: State, payload: boolean): void {
       state.error = payload
     },
-    setLoading (state: State, payload: boolean) {
+    setLoading (state: State, payload: boolean): void {
       state.loading = payload
     },
-    setImage (state: State, response: string) {
+    setImage (state: State, response: string): void {
       state.imageSrc = response
     }
   },
   actions: {
     // Get image from unsplash API
-    requestImage ({ commit, state }: ActionContext<State, unknown>) {
+    requestImage ({ commit }: ActionContext<State, unknown>): void {
       commit('setError', false)
       commit('setLoading', true)
 
@@ -47,7 +47,7 @@ export const infoBox = {
           Authorization: 'Client-ID 7rZFWXk7l3u4QBzMxe4xrHDY1gU0aKicfwkqjQ7G_zc'
         }
       })
-        .then((response: any) => {
+        .then((response) => {
           commit('setImage', response.data[0].urls.thumb)
         })
         .catch((error) => {
