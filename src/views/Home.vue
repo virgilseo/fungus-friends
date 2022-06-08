@@ -5,7 +5,9 @@
     <FilterMushrooms
       v-if="mushroomsLoaded"
       :sort="sortByColor" :choices="colorChoices"
-      :mushrooms="mushrooms" :type="'color'"/>
+      :mushrooms="mushrooms" :type="'color'"
+      :reset="resetColors" :choice="spotsChoice"
+      />
     <FilterMushrooms
       v-if="mushroomsLoaded"
       :sort="sortBySpots" :choices="spotChoices"
@@ -19,11 +21,7 @@ import { defineComponent } from 'vue'
 import MapContainer from '@/components/Map/MapContainer.vue'
 import mushrooms, { Spots, Color, Mushroom } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
-
-type Choice = {
-  name: string,
-  selected: boolean
-}
+import { colorChoices, spotChoices, Choice } from '@/components/Map/FilterChoices'
 
 export default defineComponent({
   name: 'Home',
@@ -38,24 +36,8 @@ export default defineComponent({
       mushroomsLoaded: false,
       error: false,
       loading: false,
-      colorChoices: [
-        { name: 'red', selected: false },
-        { name: 'green', selected: false },
-        { name: 'yellow', selected: false },
-        { name: 'blue', selected: false }
-      ],
-      spotChoices: [
-        { name: 'none', selected: false },
-        { name: 'hidden', selected: false },
-        { name: 'dotted', selected: false },
-        { name: 'dashed', selected: false },
-        { name: 'solid', selected: false },
-        { name: 'double', selected: false },
-        { name: 'groove', selected: false },
-        { name: 'ridge', selected: false },
-        { name: 'inset', selected: false },
-        { name: 'outset', selected: false }
-      ],
+      colorChoices: colorChoices,
+      spotChoices: spotChoices,
       color: Color,
       spots: Spots,
       colorChoice: '',
@@ -80,35 +62,37 @@ export default defineComponent({
           this.loading = false
         })
     },
-    sortByColor (choice: string) {
+    sortByColor (choice: Choice) {
       // Signal color choice
-      this.colorChoice = choice
+      choice.selected = true
+      this.colorChoice = choice.name
       if (this.spotsChoice === '') {
         const filteredMushrooms = this.allMushrooms.filter(
-          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice)
+          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice.name)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.spotChoices, 'color')
       } else {
         // Take into account spots choice when filetring the mushrooms again
         const filteredMushrooms = this.allMushrooms.filter(
-          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice &&
+          (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice.name &&
           this.spots[item.spots].toLowerCase() === this.spotsChoice)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.spotChoices, 'color')
       }
     },
-    sortBySpots (choice: string) {
+    sortBySpots (choice: Choice) {
+      choice.selected = true
       // Signal spot choice
-      this.spotsChoice = choice
+      this.spotsChoice = choice.name
       if (this.colorChoice === '') {
         const filteredMushrooms = this.allMushrooms.filter(
-          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice)
+          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice.name)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.colorChoices, 'spot')
       } else {
         // Take into account color choice when filetring the mushrooms again
         const filteredMushrooms = this.allMushrooms.filter(
-          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice &&
+          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice.name &&
           this.color[item.color].toLowerCase() === this.colorChoice)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.colorChoices, 'spot')
@@ -131,6 +115,25 @@ export default defineComponent({
           )
         )
         this.colorChoices = [...filteredChoices]
+      }
+    },
+    resetColors (choices: Array<Choice>, choice: string) {
+      choices.filter((choice: Choice) => {
+        return choice.name === this.colorChoice
+      }).map((choice: Choice) => {
+        choice.selected = false
+      })
+
+      this.colorChoice = ''
+      this.colorChoices = colorChoices
+      // Consider spot choice when reseting the filter
+      if (this.spotsChoice === '') {
+        this.mushrooms = this.allMushrooms
+        this.spotChoices = spotChoices
+      } else {
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice)
+        this.mushrooms = filteredMushrooms
       }
     }
   }
