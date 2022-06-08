@@ -11,7 +11,9 @@
     <FilterMushrooms
       v-if="mushroomsLoaded"
       :sort="sortBySpots" :choices="spotChoices"
-      :mushrooms="mushrooms" :type="'spots'"/>
+      :mushrooms="mushrooms" :type="'spots'"
+      :reset="resetSpots" :choice="colorChoice"
+      />
     <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
   </div>
 </template>
@@ -63,7 +65,7 @@ export default defineComponent({
         })
     },
     sortByColor (choice: Choice) {
-      // Signal color choice
+      // Signal color choice    
       choice.selected = true
       this.colorChoice = choice.name
       if (this.spotsChoice === '') {
@@ -129,10 +131,28 @@ export default defineComponent({
       // Consider spot choice when reseting the filter
       if (this.spotsChoice === '') {
         this.mushrooms = this.allMushrooms
-        this.spotChoices = spotChoices
       } else {
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice)
+        this.mushrooms = filteredMushrooms
+      }
+    },
+    resetSpots (choices: Array<Choice>, choice: string) {
+      choices.filter((choice: Choice) => {
+        return choice.name === this.spotsChoice
+      }).map((choice: Choice) => {
+        choice.selected = false
+      })
+
+      this.spotsChoice = ''
+      this.spotChoices = spotChoices
+      // Consider spot choice when reseting the filter
+      if (this.colorChoice === '') {
+        this.mushrooms = this.allMushrooms
+
+      } else {
+        const filteredMushrooms = this.allMushrooms.filter(
+          (item: Record<string, Spots>) => this.color[item.color].toLowerCase() === choice)
         this.mushrooms = filteredMushrooms
       }
     }
