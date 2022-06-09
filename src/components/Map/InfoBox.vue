@@ -8,13 +8,15 @@
       <li>{{ spots[mushroom.spots] }}</li>
     </ul>
   </section>
+  <ErrorMsg v-if="error" :message="'Could not get your mushroom pick :('"/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Spots, Color, Mushroom } from '@/api/front-end api.ts'
+import { Spots, Color } from '@/api/front-end api.ts'
 import { mapGetters } from 'vuex'
 import Loader from '@/components/Reusable/Loader.vue'
+import ErrorMsg from '@/components/Reusable/ErrorMsg.vue'
 
 export default defineComponent({
   name: 'InfoBox',
@@ -22,7 +24,8 @@ export default defineComponent({
     mushroom: Object
   },
   components: {
-    Loader
+    Loader,
+    ErrorMsg
   },
   data () {
     return {

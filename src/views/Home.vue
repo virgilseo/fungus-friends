@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Loader v-if="loading" />
-    <p v-if="error">Error...</p>
+    <ErrorMsg v-if="error" :message="'Something went wrong...'" />
     <FilterMushrooms
       v-if="mushroomsLoaded"
       :sort="sortByColor" :choices="colorChoices"
@@ -25,13 +25,15 @@ import mushrooms, { Spots, Color } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
 import { colorChoices, spotChoices, Choice } from '@/components/Map/FilterChoices'
 import Loader from '@/components/Reusable/Loader.vue'
+import ErrorMsg from '@/components/Reusable/ErrorMsg.vue'
 
 export default defineComponent({
   name: 'Home',
   components: {
     MapContainer,
     FilterMushrooms,
-    Loader
+    Loader,
+    ErrorMsg
   },
   data () {
     return {
