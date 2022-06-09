@@ -1,8 +1,8 @@
 <template id="">
   <div class=""  @click="toggleChoices">
-    <span>filter</span>
-    <span>by {{ type }}</span>
-    <span @click="reset(choices, choice)">reset</span>
+    <span class="material-icons">sort</span>
+    <span>{{ type }}</span>
+    <span class="material-icons" @click="reset(choices, choice)">restore</span>
   </div>
   <ul v-if="showChoices">
     <li
