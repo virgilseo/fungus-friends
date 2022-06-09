@@ -1,5 +1,5 @@
 <template>
-  <p v-if="loading">Loading...</p>
+  <Loader v-if="loading" />
   <section v-else>
     <img :src="error ? placeholder : image" alt="placeholder">
     <h3>{{ mushroom.name }}</h3>
@@ -14,11 +14,15 @@
 import { defineComponent } from 'vue'
 import { Spots, Color, Mushroom } from '@/api/front-end api.ts'
 import { mapGetters } from 'vuex'
+import Loader from '@/components/Reusable/Loader.vue'
 
 export default defineComponent({
   name: 'InfoBox',
   props: {
     mushroom: Object
+  },
+  components: {
+    Loader
   },
   data () {
     return {

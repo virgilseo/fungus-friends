@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <p v-if="loading">Loading...</p>
+    <Loader v-if="loading" />
     <p v-if="error">Error...</p>
     <FilterMushrooms
       v-if="mushroomsLoaded"
@@ -24,12 +24,14 @@ import MapContainer from '@/components/Map/MapContainer.vue'
 import mushrooms, { Spots, Color } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
 import { colorChoices, spotChoices, Choice } from '@/components/Map/FilterChoices'
+import Loader from '@/components/Reusable/Loader.vue'
 
 export default defineComponent({
   name: 'Home',
   components: {
     MapContainer,
-    FilterMushrooms
+    FilterMushrooms,
+    Loader
   },
   data () {
     return {
