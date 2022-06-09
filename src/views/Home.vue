@@ -2,18 +2,20 @@
   <div class="home">
     <Loader v-if="loading" />
     <ErrorMsg v-if="error" :message="'Something went wrong...'" />
-    <FilterMushrooms
-      v-if="mushroomsLoaded"
-      :sort="sortByColor" :choices="colorChoices"
-      :mushrooms="mushrooms" :type="'color'"
-      :reset="resetColors" :choice="spotsChoice"
-      />
-    <FilterMushrooms
-      v-if="mushroomsLoaded"
-      :sort="sortBySpots" :choices="spotChoices"
-      :mushrooms="mushrooms" :type="'spots'"
-      :reset="resetSpots" :choice="colorChoice"
-      />
+    <section class="filter-container">
+      <FilterMushrooms
+        v-if="mushroomsLoaded"
+        :sort="sortByColor" :choices="colorChoices"
+        :mushrooms="mushrooms" :type="'color'"
+        :reset="resetColors" :choice="spotsChoice"
+        />
+      <FilterMushrooms
+        v-if="mushroomsLoaded"
+        :sort="sortBySpots" :choices="spotChoices"
+        :mushrooms="mushrooms" :type="'spots'"
+        :reset="resetSpots" :choice="colorChoice"
+        />
+    </section>
     <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
   </div>
 </template>

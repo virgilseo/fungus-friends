@@ -1,14 +1,16 @@
 <template>
-  <Loader v-if="loading" />
-  <section v-else>
-    <img :src="error ? placeholder : image" alt="placeholder">
-    <h3>{{ mushroom.name }}</h3>
-    <ul>
-      <li>{{ color[mushroom.color].toLowerCase() }}</li>
-      <li>{{ spots[mushroom.spots] }}</li>
-    </ul>
-  </section>
-  <ErrorMsg v-if="error" :message="'Could not get your mushroom pick :('"/>
+  <div class="info-container">
+    <Loader class="loader-container-sm" v-if="loading" />
+    <section v-else>
+      <img :src="error ? placeholder : image" alt="placeholder">
+      <h3>{{ mushroom.name }}</h3>
+      <ul>
+        <li>{{ color[mushroom.color].toLowerCase() }}</li>
+        <li>{{ spots[mushroom.spots] }}</li>
+      </ul>
+    </section>
+    <ErrorMsg v-if="error" :message="'Could not get your mushroom pick :('"/>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,16 +1,17 @@
 <template id="">
-  <div class=""  @click="toggleChoices">
-    <span class="material-icons">sort</span>
+  <div class="filter-select"  @click="toggleChoices">
+    <span class="material-icons filter-icon">sort</span>
     <span>{{ type }}</span>
-    <span class="material-icons" @click="reset(choices, choice)">restore</span>
   </div>
-  <ul v-if="showChoices">
+  <ul class="choice-list" v-if="showChoices">
+    <span class="material-icons reset" @click="reset(choices, choice)">restore</span>
     <li
       v-for="(choice, i) in choices"  :key="i"
       @click="sort(choice, type)"
+      class="choice-item"
+      :class="{'choice-selected' :choice.selected, 'choice-item': !choice.selected }"
       >
       {{ choice.name }}
-      <span v-if="choice.selected">selected</span>
     </li>
   </ul>
 </template>

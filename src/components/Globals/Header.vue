@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <header class="header">
-      <h1 class="header-title">Fungus Friends</h1>
+      <h1 class="header-title">fungus friends</h1>
     </header>
   </div>
 </template>
