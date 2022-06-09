@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import MapContainer from '@/components/Map/MapContainer.vue'
-import mushrooms, { Spots, Color, Mushroom } from '@/api/front-end api.ts'
+import mushrooms, { Spots, Color } from '@/api/front-end api.ts'
 import FilterMushrooms from '@/components/Map/FilterMushrooms.vue'
 import { colorChoices, spotChoices, Choice } from '@/components/Map/FilterChoices'
 
@@ -65,7 +65,9 @@ export default defineComponent({
         })
     },
     sortByColor (choice: Choice) {
-      // Signal color choice    
+      // Reset color choice signal
+      this.resetChoiceIndicator(this.colorChoices, this.colorChoice)
+      // Signal color choice
       choice.selected = true
       this.colorChoice = choice.name
       if (this.spotsChoice === '') {
@@ -83,6 +85,8 @@ export default defineComponent({
       }
     },
     sortBySpots (choice: Choice) {
+      // Reset color choice signal
+      this.resetChoiceIndicator(this.spotChoices, this.spotsChoice)
       choice.selected = true
       // Signal spot choice
       this.spotsChoice = choice.name
@@ -120,12 +124,7 @@ export default defineComponent({
       }
     },
     resetColors (choices: Array<Choice>, choice: string) {
-      choices.filter((choice: Choice) => {
-        return choice.name === this.colorChoice
-      }).map((choice: Choice) => {
-        choice.selected = false
-      })
-
+      this.resetChoiceIndicator(choices, this.colorChoice)
       this.colorChoice = ''
       this.colorChoices = colorChoices
       // Consider spot choice when reseting the filter
@@ -138,23 +137,24 @@ export default defineComponent({
       }
     },
     resetSpots (choices: Array<Choice>, choice: string) {
-      choices.filter((choice: Choice) => {
-        return choice.name === this.spotsChoice
-      }).map((choice: Choice) => {
-        choice.selected = false
-      })
-
+      this.resetChoiceIndicator(choices, this.spotsChoice)
       this.spotsChoice = ''
       this.spotChoices = spotChoices
       // Consider spot choice when reseting the filter
       if (this.colorChoice === '') {
         this.mushrooms = this.allMushrooms
-
       } else {
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Spots>) => this.color[item.color].toLowerCase() === choice)
         this.mushrooms = filteredMushrooms
       }
+    },
+    resetChoiceIndicator (choices: Array<Choice>, filterChoice: string) {
+      choices.filter((choice: Choice) => {
+        return choice.name === filterChoice
+      }).map((choice: Choice) => {
+        choice.selected = false
+      })
     }
   }
 })
