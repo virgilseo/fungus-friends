@@ -21,7 +21,13 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'FilterMushrooms',
-  props: ['choices', 'type', 'sort', 'mushrooms', 'reset', 'choice'],
+  props: {
+    choices: Array,
+    type: String,
+    sort: Function,
+    reset: Function,
+    choice: String
+  },
   data () {
     return {
       showChoices: false
