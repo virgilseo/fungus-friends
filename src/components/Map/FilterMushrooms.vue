@@ -7,7 +7,7 @@
     <span class="material-icons reset" @click="reset(choices, choice)">restore</span>
     <li
       v-for="(choice, i) in choices"  :key="i"
-      @click="sort(choice, type)"
+      @click="[sort(choice), toggleChoices()]"
       class="choice-item"
       :class="{'choice-selected' :choice.selected, 'choice-item': !choice.selected }"
       >
