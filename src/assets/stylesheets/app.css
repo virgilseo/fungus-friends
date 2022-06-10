@@ -37,11 +37,12 @@ a {
   -moz-osx-font-smoothing: grayscale;
   color: #4A5568;
   font-family: 'Mukta', sans-serif;
+  height: 100%;
 }
 /*Home*/
 
 .home {
-  width: 90%;
+  width: 95%;
   margin: auto;
   min-height: 100%;
 }
@@ -82,7 +83,7 @@ a {
 
 .header {
   color: #fff;
-  width: 90%;
+  width: 95%;
   margin: auto;
 }
 
@@ -99,7 +100,8 @@ a {
   color: #fff;
   padding: 20px 0 20px 0;
   margin-top: 30px;
-  font-weight: 600px;
+  font-weight: 600;
+  font-family: 'Ubuntu Mono', monospace;
 }
 
 /*Marker InfoBox*/
@@ -169,6 +171,7 @@ a {
 .choice-item:hover {
   background-color: #F6AD55;
   color: #fff;
+  transition-duration: 0.1s;
 }
 
 .choice-selected {
