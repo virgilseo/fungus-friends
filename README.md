@@ -1,24 +1,47 @@
-# fungus-friends
+# Fungus Friends
 
-## Project setup
+Location app featuring various fungus friends from Spronq's beautiful garden.
+
+## Table of Contents
+
+* [Installation](#installation)
+* [API](#api)
+* [Vue](#vue)
+* [TypeScript](#typescript)
+
+## Installation
+
+Clone the current repository using
+```
+git clone https://github.com/virgilseo/fungus-friends.git
+```
+Next, from the project folder you need to open a terminal window and run the following command
 ```
 yarn install
 ```
-
-### Compiles and hot-reloads for development
+After the installation is complete, then run this command
 ```
 yarn serve
 ```
+After this a browser window will open on localhost:8080 and you can start using the app.
 
-### Compiles and minifies for production
-```
-yarn build
-```
+If you close the browser window and want to use the app again just remember you can find the it @ localhost:8080.
 
-### Lints and fixes files
-```
-yarn lint
-```
+## API
+The application uses third party API's to fetch the map and images for the marker info box.
+
+1. OpenStreeMap: https://www.openstreetmap.org/
+2. Unsplash: https://unsplash.com/developers
+
+## Vue
+
+The app was build using a powerful JavaScript front end framework, called Vue.js. Here is a link to their home page: https://vuejs.org/
+
+## TypeScript
+
+TypeScript is a strongly typed programming language that builds on JavaScript, that has become industry standard in front end development in recent years.
+
+https://www.typescriptlang.org/
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
