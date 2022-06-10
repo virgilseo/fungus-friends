@@ -5,13 +5,13 @@
     <section v-if="mushroomsLoaded" class="filter-container">
       <FilterMushrooms
         :sort="sortByColor" :choices="colorChoices"
-        :mushrooms="mushrooms" :type="'color'"
-        :reset="resetColors" :choice="spotsChoice"
+        :type="'color'" :reset="resetColors"
+        :choice="spotsChoice"
         />
       <FilterMushrooms
         :sort="sortBySpots" :choices="spotChoices"
-        :mushrooms="mushrooms" :type="'spots'"
-        :reset="resetSpots" :choice="colorChoice"
+        :type="'spots'" :reset="resetSpots"
+        :choice="colorChoice"
         />
     </section>
     <MapContainer v-if="mushroomsLoaded" :mushrooms="mushrooms" />
