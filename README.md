@@ -33,7 +33,7 @@ The application uses third party API's to fetch the map and images for the marke
 1. OpenStreeMap: https://www.openstreetmap.org/
 2. Unsplash: https://unsplash.com/developers
 
-The Unsplash API has a maximum limit of 50 request per hour. After that, the app displays a placeholder image and an error message.
+The Unsplash API has a maximum limit of 50 requests per hour. After that, the app displays a placeholder image and an error message.
 
 ## Vue
 
