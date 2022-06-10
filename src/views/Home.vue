@@ -2,15 +2,13 @@
   <div class="home">
     <Loader v-if="loading" />
     <ErrorMsg v-if="error" :message="'Something went wrong...'" />
-    <section class="filter-container">
+    <section v-if="mushroomsLoaded" class="filter-container">
       <FilterMushrooms
-        v-if="mushroomsLoaded"
         :sort="sortByColor" :choices="colorChoices"
         :mushrooms="mushrooms" :type="'color'"
         :reset="resetColors" :choice="spotsChoice"
         />
       <FilterMushrooms
-        v-if="mushroomsLoaded"
         :sort="sortBySpots" :choices="spotChoices"
         :mushrooms="mushrooms" :type="'spots'"
         :reset="resetSpots" :choice="colorChoice"
@@ -71,18 +69,19 @@ export default defineComponent({
         })
     },
     sortByColor (choice: Choice) {
-      // Reset color choice signal
       this.resetChoiceIndicator(this.colorChoices, this.colorChoice)
-      // Signal color choice
       choice.selected = true
       this.colorChoice = choice.name
+
       if (this.spotsChoice === '') {
+        // Account for consecutive sort choices
+        this.resetSpots(this.spotChoices, this.spotsChoice)
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice.name)
         this.mushrooms = filteredMushrooms
         this.removeChoices(this.spotChoices, 'color')
       } else {
-        // Take into account spots choice when filetring the mushrooms again
+        // Take into account spots choice when filetring the mushrooms
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Color>) => this.color[item.color].toLowerCase() === choice.name &&
           this.spots[item.spots].toLowerCase() === this.spotsChoice)
@@ -91,24 +90,24 @@ export default defineComponent({
       }
     },
     sortBySpots (choice: Choice) {
-      // Reset color choice signal
       this.resetChoiceIndicator(this.spotChoices, this.spotsChoice)
       choice.selected = true
-      // Signal spot choice
       this.spotsChoice = choice.name
+
       if (this.colorChoice === '') {
+        // Account for consecutive sort choices
+        this.resetColors(this.colorChoices, this.colorChoice)
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice.name)
         this.mushrooms = filteredMushrooms
-        this.removeChoices(this.colorChoices, 'spot')
       } else {
-        // Take into account color choice when filetring the mushrooms again
+        // Take into account color choice when filetring the mushrooms
         const filteredMushrooms = this.allMushrooms.filter(
           (item: Record<string, Spots>) => this.spots[item.spots].toLowerCase() === choice.name &&
           this.color[item.color].toLowerCase() === this.colorChoice)
         this.mushrooms = filteredMushrooms
-        this.removeChoices(this.colorChoices, 'spot')
       }
+      this.removeChoices(this.colorChoices, 'spot')
     },
     // Filter out choices from the second select boxes
     // Check the mushrooms that reamain on page and then filter the choices
@@ -119,14 +118,14 @@ export default defineComponent({
             spot.name === this.spots[mushroom.spots]
           )
         )
-        this.spotChoices = [...filteredChoices]
+        this.spotChoices = filteredChoices
       } else {
         const filteredChoices = choices.filter((color: Choice) =>
           this.mushrooms.some((mushroom: Record<string, Spots>) =>
             color.name === this.color[mushroom.color].toLowerCase()
           )
         )
-        this.colorChoices = [...filteredChoices]
+        this.colorChoices = filteredChoices
       }
     },
     resetColors (choices: Array<Choice>, choice: string) {
@@ -146,7 +145,7 @@ export default defineComponent({
       this.resetChoiceIndicator(choices, this.spotsChoice)
       this.spotsChoice = ''
       this.spotChoices = spotChoices
-      // Consider spot choice when reseting the filter
+      // Consider color choice when reseting the filter
       if (this.colorChoice === '') {
         this.mushrooms = this.allMushrooms
       } else {
