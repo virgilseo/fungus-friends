@@ -180,3 +180,19 @@ a {
   color: #fff;
   background-color: #F6AD55;
 }
+
+/*Error Message*/
+.error-container {
+  color: #fff;
+  background-color: #F6AD55;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  margin-top: 12px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.error-icon {
+  margin-right: 4px;
+}

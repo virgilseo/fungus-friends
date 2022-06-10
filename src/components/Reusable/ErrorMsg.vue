@@ -2,8 +2,8 @@
   <div
     class="error-container"
   >
-    <span class="material-icons ">error</span>
-    <span class="error-msg">{{ message }}</span>
+    <span class="material-icons error-icon">error</span>
+    <span>{{ message }}</span>
   </div>
 </template>
 

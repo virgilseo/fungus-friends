@@ -9,7 +9,7 @@
         <li>{{ spots[mushroom.spots] }}</li>
       </ul>
     </section>
-    <ErrorMsg v-if="error" :message="'Could not get your mushroom pick :('"/>
+    <ErrorMsg v-if="error" :message="'Something went wrong'"/>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Loader v-if="loading" />
-    <ErrorMsg v-if="error" :message="'Something went wrong...'" />
+    <ErrorMsg v-if="error" :message="'Something went wrong'" />
     <section v-if="mushroomsLoaded" class="filter-container">
       <FilterMushrooms
         :sort="sortByColor" :choices="colorChoices"
